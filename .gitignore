@@ -1,0 +1,14 @@
+venv/
+env/
+.venv/
+.vscode/
+
+*.csv
+
+*.pyc
+*.pyo
+
+__pycache__/
+
+swing_logs_*.txt
+
