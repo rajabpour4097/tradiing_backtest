@@ -199,8 +199,17 @@ def main():
     try:
         data = pd.read_csv('M1_data_EURUSD_2025-09.csv')
         data['time'] = pd.to_datetime(data['time'])
+        
+        # اعمال فیلتر زمانی (08:30 تا 20:30)
+        mask = ((data['time'].dt.hour > 8) | \
+                ((data['time'].dt.hour == 8) & (data['time'].dt.minute >= 30))) & \
+               ((data['time'].dt.hour < 20) | \
+                ((data['time'].dt.hour == 20) & (data['time'].dt.minute <= 30)))
+        data = data[mask]
+        
         data.set_index('time', inplace=True)
-        print(f"📊 {len(data)} نقطه داده بارگذاری شد")
+        print(f"📊 {len(data)} نقطه داده بارگذاری شد (فیلتر شده بین 08:30 تا 20:30)")
+        print(f"🕒 ساعات معاملاتی: 08:30 - 20:30")
     except Exception as e:
         print(f"❌ خطا در بارگذاری داده‌ها: {e}")
         return
