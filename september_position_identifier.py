@@ -2,6 +2,7 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 import sys
+from tqdm import tqdm
 from fibo_calculate import fibonacci_retracement
 from get_legs import get_legs
 from swing import get_swing_points
@@ -19,9 +20,12 @@ class SeptemberPositionIdentifier:
         
     def identify_positions(self):
         print("🔍 شروع شناسایی پوزیشن‌ها برای کل ماه سپتامبر...")
-        for i in range(200, len(self.data)):
-            current_data = self.data.iloc[: i + 1].copy()
-            self._process_data_point(current_data, i)
+        total_candles = len(self.data) - 200
+        with tqdm(total=total_candles, desc="پردازش کندل‌ها", unit="کندل") as pbar:
+            for i in range(200, len(self.data)):
+                current_data = self.data.iloc[: i + 1].copy()
+                self._process_data_point(current_data, i)
+                pbar.update(1)
         return self.positions
     
     def _process_data_point(self, data, current_index):
